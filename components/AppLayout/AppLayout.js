@@ -26,7 +26,7 @@ import {
 import { ButtonStyle, GlobalStyle } from "../common/commonStyles";
 
 const AppLayout = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <>
@@ -40,13 +40,13 @@ const AppLayout = ({ children }) => {
             </Link>
           </div>
 
-          <ButtonStyle>
+          <p>
             {isLoggedIn ? (
               <Link href="/postAdd">글작성</Link>
             ) : (
               <Link href="/login">로그인</Link>
             )}
-          </ButtonStyle>
+          </p>
         </TextContainer>
       </Header>
       <MainBlogBox>
