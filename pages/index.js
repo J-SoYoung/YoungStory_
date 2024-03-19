@@ -1,9 +1,8 @@
 import React from "react";
 import AppLayout from "../components/AppLayout/AppLayout";
-
 import { Card } from "antd";
 import styled from "styled-components";
-import { dummydata } from "../dummy/data";
+import { useSelector } from "react-redux";
 
 const HomeContents = styled.div`
   width: 100%;
@@ -23,12 +22,14 @@ const CardStyle = styled(Card)`
 `;
 
 const Home = () => {
+  const blogData = useSelector((state) => state.post.mainPosts);
+
   return (
     <AppLayout>
       <h1>HOME</h1>
       {/* 최근게시물 3개 */}
       <HomeContents>
-        {dummydata.map((data) => (
+        {blogData.map((data) => (
           <CardStyle
             key={data.postId}
             hoverable

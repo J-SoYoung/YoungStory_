@@ -1,27 +1,23 @@
-import React, { useState } from "react";
-import AppLayout from "../components/AppLayout/AppLayout";
-import { Button, Checkbox, Form, Input } from "antd";
-import { ButtonStyle, InputStyle } from "../components/common/commonStyles";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../reducers/user";
 
-const dummyUser = {
-  username: "thdud",
-  password: "thdud",
-};
+import AppLayout from "../components/AppLayout/AppLayout";
+import { useInput } from "../hooks/useInput";
+import { Form } from "antd";
+import { ButtonStyle, InputStyle } from "../components/globalStyle/style";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const onChangeUsername = (e) => {
-    setUsername(e.target.value);
-  };
-  const [password, setPassword] = useState("");
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-  
+  const dispatch = useDispatch();
+  const [username, onChangeUsername, resetUsername] = useInput("");
+  const [password, onChangePassword, resetPassword] = useInput("");
+
   const onSubmit = () => {
-    console.log(username, password);
-    setUsername("");
-    setPassword("");
+    dispatch(loginAction(username));
+    alert("로그인성공, 페이지이동 -> home");
+
+    resetUsername();
+    resetPassword();
   };
 
   return (
@@ -33,6 +29,7 @@ const Login = () => {
           <br />
 
           <InputStyle
+            type="text"
             placeholder="username을 입력하세요"
             name="username"
             value={username}
@@ -45,6 +42,7 @@ const Login = () => {
           <label htmlFor="user_password">password</label>
           <br />
           <InputStyle
+            type="password"
             placeholder="password를 입력하세요"
             name="user_password"
             value={password}

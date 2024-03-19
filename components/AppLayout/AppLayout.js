@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   ProfileOutlined,
@@ -23,11 +23,16 @@ import {
   Contents,
   LinkMenu,
 } from "./styles";
-import { ButtonStyle, GlobalStyle } from "../common/commonStyles";
+import { GlobalStyle } from "../globalStyle/style";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../../reducers/user";
 
 const AppLayout = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const onClickLogout = () => {
+    dispatch(logoutAction());
+  };
   return (
     <>
       <GlobalStyle />
@@ -42,7 +47,10 @@ const AppLayout = ({ children }) => {
 
           <p>
             {isLoggedIn ? (
-              <Link href="/postAdd">글작성</Link>
+              <>
+                <Link href="/postAdd">글작성</Link>
+                <button onClick={onClickLogout}>로그아웃</button>
+              </>
             ) : (
               <Link href="/login">로그인</Link>
             )}
@@ -67,13 +75,22 @@ const AppLayout = ({ children }) => {
               <a
                 href="https://www.notion.so/fun-blog/young-s-Blog-ad4aa1d36a3046238326b7d636322355"
                 target="_blank"
+                rel="noreferrer"
               >
                 <Image src={IconNotion} alt="Notion 페이지로 이동" width={40} />
               </a>
-              <a href="https://github.com/J-SoYoung" target="_blank">
+              <a
+                href="https://github.com/J-SoYoung"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Image src={IconGithub} alt="Github 페이지로 이동" width={40} />
               </a>
-              <a href="https://j-soyoung.github.io/" target="_blank">
+              <a
+                href="https://j-soyoung.github.io/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Image src={IconTIL} alt="개발 TIL로 이동" width={40} />
               </a>
             </LinkMenu>
