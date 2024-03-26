@@ -3,7 +3,5 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/postAdd": "pages/postAdd.js",
-  "/studynote": "pages/studynote.js",
-  "/login": "pages/login.js"
+  "/contact": "pages/contact.js"
 }
