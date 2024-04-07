@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Router from "next/router";
 import { useInput } from "../hooks/useInput";
 import AppLayout from "../components/AppLayout/AppLayout";
 import {
@@ -9,39 +10,53 @@ import {
 } from "../components/globalStyle/style";
 import { Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost } from "../reducers/post";
+import { ADD_POST_REQUEST } from "../reducers/post";
 
 const PostAdd = () => {
   const dispatch = useDispatch();
   const username = useSelector((state) => state.user.me.username);
-  const blogData = useSelector((state) => state.post.mainPosts);
-  console.log(blogData);
-  const [title, handleChangetitle, resetTitle] = useInput("");
-  const [textarea, handleChangeTextArea, resetTextarea] = useInput("");
+  const { mainPosts, addPostLoading, addPostDone, addPostError } = useSelector(
+    (state) => state.post
+  );
+  console.log(mainPosts);
+
+  const [title, handleChangetitle] = useInput("");
+  const [content, handleChangeContent] = useInput("");
+  // const [categories, handleChangeCategories] = useInput("categories");
   const [categories, setCategoreis] = useState("categories");
 
   const handleChangeCategories = (value) => {
     setCategoreis(value);
   };
 
+  useEffect(() => {
+    if (addPostDone) {
+      Router.push("/");
+    } else if (addPostError) {
+      alert(addPostError);
+    }
+  }, [addPostDone]);
+
   const onSubmitPost = () => {
-    const newPost = {
+    if (!title || !content || categories === "categories") {
+      alert("빈칸을 작성해주세요");
+      return;
+    }
+    
+    const dummyNewPost = {
       postId: new Date().getTime(),
-      username: username,
-      categories,
+      User: { username: username, id: 1 },
       title,
+      categories,
       img: null,
-      description: textarea,
-      createAt: new Date().toISOString().split("T")[0],
-      comment: [],
+      content: content,
+      Comments: [],
     };
 
-    console.log(newPost);
-    dispatch(addPost(newPost));
-
-    setCategoreis("categories");
-    resetTitle();
-    resetTextarea();
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: dummyNewPost,
+    });
   };
 
   return (
@@ -59,18 +74,20 @@ const PostAdd = () => {
             style={{ width: 120 }}
             onChange={handleChangeCategories}
             options={[
-              { value: "categories", label: "categories" },
-              { value: "study-note", label: "study-note" },
-              { value: "portfolio", label: "portfolio" },
+              { value: "til", label: "Today I Learn" },
+              { value: "studyNote", label: "Study Note" },
+              { value: "portfolio", label: "Portfolio" },
             ]}
           />
           <TextAreaStyle
             rows={4}
-            value={textarea}
-            onChange={handleChangeTextArea}
+            value={content}
+            onChange={handleChangeContent}
             placeholder="내용을 입력해주세요"
           />
-          <ButtonStyle htmltype="submit">포스트 작성</ButtonStyle>
+          <ButtonStyle htmltype="submit" loading={addPostLoading}>
+            포스트 작성
+          </ButtonStyle>
         </Form.Item>
       </Form>
     </AppLayout>

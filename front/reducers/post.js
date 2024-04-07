@@ -1,77 +1,68 @@
 import { faker } from "@faker-js/faker";
 import shortid from "shortid";
+import { produce } from "immer";
 
 export const initialState = {
   mainPosts: [
     {
       postId: 1,
-      User: { username: "thdud", id: shortid },
+      User: { username: "thdud", id: 1 },
       title: "제목입니다1111",
-      categories: "study-note",
-      img: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-      description:
-        "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-      createAt: new Date().toISOString().split("T")[0],
-      Comments: [
-        {
-          User: { username: "thdud2", id: shortid },
-          contents: "후후 나는 들어간다 TOSS에",
-        },
-        {
-          User: { username: "thdud2", id: shortid },
-          contents: "오dddddd",
-        },
-      ],
+      categories: "studyNote",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      Comments: [],
+      img: null,
     },
   ],
+
+  addPostLoading: false, // 게시글 작성 시도중
+  addPostDone: false,
+  addPostError: null,
 };
 
-const ADD_POST = "ADD_POST";
-
-export const addPost = (data) => {
-  return {
-    type: ADD_POST,
-    data: data,
-  };
-};
+export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
+export const ADD_POST_SUCCESS = "ADD_POST_SUCCESS";
+export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
 
 const dummyPost = {
-  postId: 3,
-  User: { username: "thdud2", id: shortid },
+  postId: 2,
+  User: { username: "thdud2", id: 2 },
   title: "추가합니다",
-  categories: "study-note",
-  img: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  description: "추가하는 데이터입니다. 후후우후우 빨리 DB연결해서 추가하자",
+  categories: "studyNote",
+  content:
+    "추가하는 데이터입니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   createAt: new Date().toISOString().split("T")[0],
-  Comments: [
-    {
-      User: { username: "thdud2", id: shortid },
-      contents: "카우스 스시를 시킬까말까",
-    },
-    {
-      User: { username: "thdud2", id: shortid },
-      contents: "먹고싶은데 먹고 싶지않다 동시에 드는 생각",
-    },
-  ],
+  Comments: [],
+  img: null,
 };
-
-// async Action
-
-// Action
 
 // reducer
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "ADD_POST": {
-      console.log("postaction-", action);
-      return {
-        ...state,
-        mainPosts: [action.data, ...state.mainPosts],
-      };
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case "ADD_POST_REQUEST": {
+        draft.addPostLoading = true;
+        draft.addPostDone = false;
+        draft.addPostError = null;
+        break;
+      }
+      case "ADD_POST_SUCCESS": {
+        draft.mainPosts.unshift(action.data);
+        draft.addPostLoading = false;
+        draft.addPostDone = true;
+        break;
+      }
+      case "ADD_POST_FAILURE": {
+        draft.addPostLoading = false;
+        draft.addPostDone = false;
+        draft.addPostError = action.error;
+        break;
+      }
+      default:
+        return state;
     }
-    default:
-      return state;
-  }
+  });
 };
 
 export default reducer;
