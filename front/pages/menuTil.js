@@ -1,12 +1,12 @@
 import React from "react";
 import AppLayout from "../components/AppLayout/AppLayout";
 
-const Portfolio = () => {
+const MenuTil = () => {
   return (
     <AppLayout>
-      <h1>Portfolio</h1>
+      <h1>PageTil</h1>
     </AppLayout>
   );
 };
 
-export default Portfolio;
+export default MenuTil;

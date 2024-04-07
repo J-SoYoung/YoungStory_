@@ -36,7 +36,7 @@ const NoteStyle = styled.div`
   cursor: pointer;
 `;
 
-const Studynote = () => {
+const menuStudynote = () => {
   const { mainPosts } = useSelector((state) => state.post);
   console.log(mainPosts);
 
@@ -100,4 +100,4 @@ const Studynote = () => {
   );
 };
 
-export default Studynote;
+export default menuStudynote;

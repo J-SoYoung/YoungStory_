@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import {
-  ProfileOutlined,
   PhoneOutlined,
   LaptopOutlined,
+  BookOutlined,
+  SignatureOutlined
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
@@ -52,7 +53,10 @@ const AppLayout = ({ children }) => {
                 <button onClick={onClickLogout}>로그아웃</button>
               </>
             ) : (
+              <>
+              <Link href="/postAdd">글작성 임시 / </Link>
               <Link href="/login">로그인</Link>
+              </>
             )}
           </p>
         </TextContainer>
@@ -61,14 +65,17 @@ const AppLayout = ({ children }) => {
         <TextContainer>
           <Sidebar>
             <Menu mode="vertical" style={{ width: 200 }}>
-              <Menu.Item key="studynote" icon={<ProfileOutlined />}>
-                <Link href="/studynote">DEV STUDY-NOTE</Link>
+              <Menu.Item key="til" icon={<SignatureOutlined />}>
+                <Link href="/menuTil">TIL</Link>
+              </Menu.Item>
+              <Menu.Item key="studynote" icon={<BookOutlined />}>
+                <Link href="/menuStudynote">DEV STUDY-NOTE</Link>
               </Menu.Item>
               <Menu.Item key="portfolio" icon={<LaptopOutlined />}>
-                <Link href="/portfolio">PORTFOLIO</Link>
+                <Link href="/menuPortfolio">PORTFOLIO</Link>
               </Menu.Item>
               <Menu.Item key="contact" icon={<PhoneOutlined />}>
-                <Link href="/contact">CONTACT</Link>
+                <Link href="/menuContact">CONTACT</Link>
               </Menu.Item>
             </Menu>
             <LinkMenu>
