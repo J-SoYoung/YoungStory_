@@ -4,8 +4,15 @@ export const TextContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
   position: relative;
+  & > div .sideber {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+  }
 `;
 export const Header = styled.div`
+  padding: 16px;
+  box-sizing: border-box;
   height: 110px;
   position: fixed;
   top: 0;
@@ -41,18 +48,10 @@ export const Sidebar = styled.div`
 `;
 export const Contents = styled.div`
   width: 100%;
+  border: 1px solid blue;
   min-height: 100vh;
   margin-left: 200px;
   border: 1px solid #eee;
-  padding: 30px;
+  padding: 16px;
   box-sizing: border-box;
-`;
-export const LinkMenu = styled.div`
-  position: fixed;
-  bottom: 0;
-  text-align: center;
-  & a {
-    display: inline-block;
-    margin: 14px;
-  }
 `;

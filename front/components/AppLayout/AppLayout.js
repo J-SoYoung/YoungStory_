@@ -4,14 +4,11 @@ import {
   PhoneOutlined,
   LaptopOutlined,
   BookOutlined,
-  SignatureOutlined
+  SignatureOutlined,
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 
 import Image from "next/image";
-import IconGithub from "../../assets/icons/icon_github.svg";
-import IconNotion from "../../assets/icons/icon_notion.svg";
-import IconTIL from "../../assets/icons/icon_TIL.svg";
 import IconLOGO from "../../assets/icons/logo.png";
 
 import { Menu } from "antd";
@@ -27,10 +24,13 @@ import {
 import { GlobalStyle } from "../globalStyle/style";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../reducers/user";
+import TILPostView from "../HomePostView/TILPostView";
 
 const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.user);
+  const { mainPosts } = useSelector((state) => state.post);
+
   const onClickLogout = () => {
     dispatch(logoutAction());
   };
@@ -54,8 +54,8 @@ const AppLayout = ({ children }) => {
               </>
             ) : (
               <>
-              <Link href="/postAdd">글작성 임시 / </Link>
-              <Link href="/login">로그인</Link>
+                <Link href="/postAdd">글작성 임시 / </Link>
+                <Link href="/login">로그인</Link>
               </>
             )}
           </p>
@@ -78,32 +78,10 @@ const AppLayout = ({ children }) => {
                 <Link href="/menuContact">CONTACT</Link>
               </Menu.Item>
             </Menu>
-            <LinkMenu>
-              <a
-                href="https://www.notion.so/fun-blog/young-s-Blog-ad4aa1d36a3046238326b7d636322355"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image src={IconNotion} alt="Notion 페이지로 이동" width={40} />
-              </a>
-              <a
-                href="https://github.com/J-SoYoung"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image src={IconGithub} alt="Github 페이지로 이동" width={40} />
-              </a>
-              <a
-                href="https://j-soyoung.github.io/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image src={IconTIL} alt="개발 TIL로 이동" width={40} />
-              </a>
-            </LinkMenu>
           </Sidebar>
           <Contents>{children}</Contents>
         </TextContainer>
+        {/* <TILPostView data={tilData} /> */}
       </MainBlogBox>
     </>
   );
