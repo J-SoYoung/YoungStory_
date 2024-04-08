@@ -1,103 +1,65 @@
-import React, { useState } from "react";
-import AppLayout from "../components/AppLayout/AppLayout";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  HeartOutlined,
-  LikeFilled,
-  MessageOutlined,
-  RetweetOutlined,
-} from "@ant-design/icons";
-import { Avatar, Button, Card, Form, Input } from "antd";
-import PostForm from "../components/PostForm/PostForm";
-import CommentForm from "../components/Comment/CommentForm";
-import FollowButton from "../components/Follow/FollowButton";
-import { ButtonStyle } from "../components/globalStyle/style";
+import { useDispatch, useSelector } from "react-redux";
+import { LOAD_MENUPOSTS_REQUEST } from "../reducers/post";
 
-const NoteStyle = styled.div`
-  height: 134px;
-  padding: 16px;
-  box-sizing: border-box;
-  border: 1px solid #eee;
-  margin: 16px;
-  white-space: normal;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  & > div.title {
-    padding: 0 16px 16px;
-    box-sizing: border-box;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  cursor: pointer;
-`;
+import AppLayout from "../components/AppLayout/AppLayout";
+import StudyNotePostView from "../components/HomePostView/StudyNotePostView";
 
 const menuStudynote = () => {
-  const { mainPosts } = useSelector((state) => state.post);
-  console.log(mainPosts);
+  const dispatch = useDispatch();
+  const { loadMenuPostsLoading, loadMenuPostsError, mainPosts } = useSelector(
+    (state) => state.post
+  );
+  const post = mainPosts.filter((m) => m.categories === "studyNote");
+  console.log(post);
 
-  const [commentOpen, setCommentOpen] = useState(false);
-  const onToggleCommentOpen = () => {
-    setCommentOpen(!commentOpen);
-  };
-  const [liked, setLiked] = useState(false);
-  const onToggleLike = () => {
-    setLiked(!LikeFilled);
-  };
+  useEffect(() => {
+    if (loadMenuPostsError) {
+      alert(loadMenuPostsError);
+    }
+    if (loadMenuPostsLoading) {
+      <div>로딩중</div>;
+    }
+  }, [loadMenuPostsError, loadMenuPostsLoading]);
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MENUPOSTS_REQUEST,
+      categories: "studyNote",
+    });
+  }, [mainPosts]);
 
   return (
     <AppLayout>
       <h1>Studynote</h1>
-
-      <PostForm />
-      {mainPosts.length < 1 ? (
-        <p>노트가 없습니다</p>
-      ) : (
-        mainPosts.map((post) => (
-          <>
-            <Card
-              actions={[
-                <RetweetOutlined key="retweet" />,
-                liked ? (
-                  <HeartTwoTone
-                    key="heart2"
-                    twoToneColor="#eb2f96"
-                    onClick={onToggleLike}
-                  />
-                ) : (
-                  <HeartOutlined key="heart" onClick={onToggleLike} />
-                ),
-                <MessageOutlined key="message" onClick={onToggleCommentOpen} />,
-              ]}
-              title={post.title}
-              extra={
-                <>
-                  <FollowButton />
-                  <span> </span>
-                  {post.createAt}
-                </>
-              }
-            >
-              <Card.Meta
-                avatar={<Avatar>{post.User.username[0]}</Avatar>}
-                description={
-                  <>
-                    {post.categories}
-                    <p>{post.description}</p>
-                  </>
-                }
-              />
-            </Card>
-            {commentOpen && <CommentForm />}
-          </>
-        ))
-      )}
+      <HashtagsBox>
+        <span>JavaScript</span>
+        <span>React</span>
+        <span>Next.js</span>
+        <span>TypeScript</span>
+        <span>Web</span>
+        <span>CS</span>
+      </HashtagsBox>
+      <StudyNotePostView data={post} />
     </AppLayout>
   );
 };
 
+const HashtagsBox = styled.div`
+  margin: 40px 0;
+  & > span {
+    background-color: #eee;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    margin: 0 8px;
+    cursor: pointer;
+  }
+  & > span:hover {
+    background-color: #FCBE24;
+    color: white;
+    font-weight: 600;
+  }
+`;
 export default menuStudynote;
