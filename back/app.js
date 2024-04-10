@@ -4,6 +4,7 @@ const db = require("./models");
 const app = express();
 
 const postRouter = require("./routes/post");
+const userRouter = require("./routes/user");
 
 db.sequelize
   .sync()
@@ -25,6 +26,7 @@ app.use(
 app.use(express.json());
 
 app.use("/post", postRouter);
+app.use("/user", userRouter);
 
 app.listen(3065, () => {
   console.log("서버 실행중 >_<");
