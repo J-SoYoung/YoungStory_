@@ -13,7 +13,6 @@ const sequelize = new Sequelize(
   config
 );
 
-console.log(sequelize);
 // 시퀄라이즈 모델 등록 = require로 해당 함수를 실행한다. db의 빈 객체에 모델 넣음
 db.Category = require("./category")(sequelize, Sequelize);
 db.Comment = require("./comment")(sequelize, Sequelize);
