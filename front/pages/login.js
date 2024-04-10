@@ -1,4 +1,5 @@
 import React from "react";
+import Router from "next/router";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../reducers/user";
 
@@ -19,7 +20,9 @@ const Login = () => {
     resetUsername();
     resetPassword();
   };
-
+  const clickMovePageSignup = () => {
+    Router.push("/signup");
+  };
   return (
     <AppLayout>
       <h1>Login</h1>
@@ -51,6 +54,9 @@ const Login = () => {
           />
         </div>
         <ButtonStyle> 로그인하기 </ButtonStyle>
+        <p onClick={clickMovePageSignup} style={{ cursor: "pointer" }}>
+          아직 회원이 아니신가요? 회원가입하러 가기
+        </p>
       </Form>
     </AppLayout>
   );

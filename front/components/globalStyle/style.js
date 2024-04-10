@@ -66,3 +66,8 @@ export const ButtonStyle = styled.button`
     background-color: #15503f;
   }
 `;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-weight: 600;
+`;
