@@ -12,6 +12,10 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  LOAD_USER_INFO_REQUEST,
 } from "../reducers/user";
 
 function signupAPI(data) {
@@ -19,7 +23,6 @@ function signupAPI(data) {
 }
 function* signup(action) {
   try {
-    console.log("회원가입사가", action);
     const result = yield call(signupAPI, action.data);
     // yield delay(1000);
     yield put({
@@ -27,17 +30,70 @@ function* signup(action) {
       data: result.data,
     });
   } catch (error) {
-    console.error("회원가입 saga실패", error);
+    console.error(error);
     yield put({
       type: SIGNUP_FAILURE,
       error: error.response.data,
     });
   }
 }
+
+function loginAPI(data) {
+  return axios.post("/user/login", data);
+}
+function* login(action) {
+  try {
+    const result = yield call(loginAPI, action.data);
+    console.log("사가 로그인", result);
+    // yield delay(1000);
+    yield put({
+      type: LOGIN_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOGIN_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
+function loadUserInfoAPI() {
+  return axios.get("/user");
+}
+function* loadUserInfo(action) {
+  try {
+    const result = yield call(loadUserInfoAPI, action.data);
+    console.log("사가 유저 데이터", result);
+    // yield delay(1000);
+    yield put({
+      type: LOGIN_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOGIN_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
 function* watchSignup() {
   yield takeLatest(SIGNUP_REQUEST, signup);
 }
+function* watchLogin() {
+  yield takeLatest(LOGIN_REQUEST, login);
+}
+function* watchLoadUserInfo() {
+  yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
+}
 
 export default function* userSaga() {
-  yield all([fork(watchSignup)]);
+  yield all([
+    fork(watchSignup),
+    fork(watchLogin),
+    fork(watchLoadUserInfo),
+  ]);
 }
