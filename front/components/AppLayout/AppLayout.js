@@ -28,9 +28,9 @@ import TILPostView from "../HomePostView/TILPostView";
 
 const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
-
+  
   const onClickLogout = () => {
     dispatch(logoutAction());
   };
@@ -47,7 +47,7 @@ const AppLayout = ({ children }) => {
           </div>
 
           <p>
-            {isLoggedIn ? (
+            {me ? (
               <>
                 <Link href="/postAdd">글작성</Link>
                 <button onClick={onClickLogout}>로그아웃</button>
