@@ -16,6 +16,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOAD_USER_INFO_REQUEST,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 } from "../reducers/user";
 
 function signupAPI(data) {
@@ -45,7 +48,6 @@ function* login(action) {
   try {
     const result = yield call(loginAPI, action.data);
     console.log("사가 로그인", result);
-    // yield delay(1000);
     yield put({
       type: LOGIN_SUCCESS,
       data: result.data,
@@ -54,6 +56,24 @@ function* login(action) {
     console.error(error);
     yield put({
       type: LOGIN_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
+function logoutAPI() {
+  return axios.post("/user/logout");
+}
+function* logout() {
+  try {
+    const result = yield call(logoutAPI);
+    yield put({
+      type: LOGOUT_SUCCESS,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOGOUT_FAILURE,
       error: error.response.data,
     });
   }
@@ -86,6 +106,9 @@ function* watchSignup() {
 function* watchLogin() {
   yield takeLatest(LOGIN_REQUEST, login);
 }
+function* watchLogout() {
+  yield takeLatest(LOGOUT_REQUEST, logout);
+}
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
 }
@@ -94,6 +117,7 @@ export default function* userSaga() {
   yield all([
     fork(watchSignup),
     fork(watchLogin),
+    fork(watchLogout),
     fork(watchLoadUserInfo),
   ]);
 }

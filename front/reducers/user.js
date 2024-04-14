@@ -15,7 +15,7 @@ export const initialState = {
   logoutDone: false,
   logoutError: null,
 
-  loadUserInfoLoading: false, // 로그아웃 시도중
+  loadUserInfoLoading: false, // 유저정보 가져오기 시도중
   loadUserInfoDone: false,
   loadUserInfoError: null,
 };
@@ -49,7 +49,6 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case "SIGNUP_SUCCESS": {
-        console.log("회원가입");
         draft.signupLoading = false;
         draft.signupDone = true;
         break;
@@ -79,6 +78,26 @@ const reducer = (state = initialState, action) => {
         draft.loginLoading = false;
         draft.loginDone = false;
         draft.loginError = action.error;
+        break;
+      }
+
+      case "LOGOUT_REQUEST": {
+        // 로그아웃
+        draft.logoutLoading = true;
+        draft.logoutDone = false;
+        draft.logoutError = null;
+        break;
+      }
+      case "LOGOUT_SUCCESS": {
+        draft.logoutLoading = false;
+        draft.logoutDone = true;
+        draft.me = null;
+        break;
+      }
+      case "LOGOUT_FAILURE": {
+        draft.logoutLoading = false;
+        draft.logoutDone = false;
+        draft.logoutError = action.error;
         break;
       }
 

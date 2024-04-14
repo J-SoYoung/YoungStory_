@@ -63,7 +63,15 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-// GET /user
+// POST /user/logout
+router.post("/logout", (req, res, next) => {
+  req.logout(() => {
+    req.session.destroy();
+    res.send("logout OK");
+  });
+});
+
+// GET /user 유저정보 가져오기
 router.get("/", async (req, res, next) => {
   console.log("서버 req.user", req.user);
   try {

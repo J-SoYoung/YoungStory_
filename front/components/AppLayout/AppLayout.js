@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
+import Router from "next/router";
 import Link from "next/link";
 import {
   PhoneOutlined,
@@ -23,17 +24,21 @@ import {
 } from "./styles";
 import { GlobalStyle } from "../globalStyle/style";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAction } from "../../reducers/user";
+import { LOGOUT_REQUEST } from "../../reducers/user";
 import TILPostView from "../HomePostView/TILPostView";
 
 const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+
+  const onClickLogout = useCallback(() => {
+    if (confirm("로그아웃 하시겠습니까?")) {
+      dispatch({
+        type: LOGOUT_REQUEST,
+      });
+    }
+  }, []);
   
-  const onClickLogout = () => {
-    dispatch(logoutAction());
-  };
   return (
     <>
       <GlobalStyle />
@@ -49,12 +54,18 @@ const AppLayout = ({ children }) => {
           <p>
             {me ? (
               <>
-                <Link href="/postAdd">글작성</Link>
-                <button onClick={onClickLogout}>로그아웃</button>
+                <button
+                  style={{ margin: "4px" }}
+                  onClick={() => Router.push("/postAdd")}
+                >
+                  글작성
+                </button>
+                <button style={{ margin: "4px" }} onClick={onClickLogout}>
+                  로그아웃
+                </button>
               </>
             ) : (
               <>
-                <Link href="/postAdd">글작성 임시 / </Link>
                 <Link href="/login">로그인</Link>
               </>
             )}
