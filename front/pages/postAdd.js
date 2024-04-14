@@ -14,48 +14,48 @@ import { ADD_POST_REQUEST } from "../reducers/post";
 
 const PostAdd = () => {
   const dispatch = useDispatch();
-  const username = useSelector((state) => state.user.me.username);
+  const { me } = useSelector((state) => state.user);
   const { mainPosts, addPostLoading, addPostDone, addPostError } = useSelector(
     (state) => state.post
   );
-  console.log(mainPosts);
+  // console.log(mainPosts, me);
 
   const [title, handleChangetitle] = useInput("");
   const [content, handleChangeContent] = useInput("");
-  // const [categories, handleChangeCategories] = useInput("categories");
-  const [categories, setCategoreis] = useState("categories");
+  const [category, setCategory] = useState("category");
 
-  const handleChangeCategories = (value) => {
-    setCategoreis(value);
+  const handleChangeCategory = (value) => {
+    setCategory(value);
   };
 
   useEffect(() => {
-    if (addPostDone) {
+    if (!me) {
+      alert("로그인이 필요한 서비스입니다");
+      Router.push("/");
+    }
+  }, [me]);
+
+  useEffect(() => {
+    if (!addPostLoading && addPostDone) {
+      // 포스트 작성하고 이어서 글작성이 안됨. 어떤 조건??? 새로고침 해서 저 조건들을 업데이트 해야함
+      alert("ㅇㅇㅇㅇ");
       Router.push("/");
     } else if (addPostError) {
-      alert(addPostError);
+      alert("포스트 작성 실패");
+      console.error(addPostError);
     }
-  }, [addPostDone]);
+  }, [addPostDone, addPostLoading, addPostError]);
 
   const onSubmitPost = () => {
-    if (!title || !content || categories === "categories") {
+    if (!title || !content || category === "category") {
       alert("빈칸을 작성해주세요");
       return;
     }
-    
-    const dummyNewPost = {
-      postId: new Date().getTime(),
-      User: { username: username, id: 1 },
-      title,
-      categories,
-      img: null,
-      content: content,
-      Comments: [],
-    };
 
+    console.log("포스트작성", title, category, content);
     dispatch({
       type: ADD_POST_REQUEST,
-      data: dummyNewPost,
+      data: { title, category, img: null, content: content },
     });
   };
 
@@ -70,9 +70,9 @@ const PostAdd = () => {
             placeholder="제목을 입력해주세요"
           />
           <SelectStyle
-            value={categories}
+            value={category}
             style={{ width: 120 }}
-            onChange={handleChangeCategories}
+            onChange={handleChangeCategory}
             options={[
               { value: "til", label: "Today I Learn" },
               { value: "studyNote", label: "Study Note" },
@@ -85,9 +85,7 @@ const PostAdd = () => {
             onChange={handleChangeContent}
             placeholder="내용을 입력해주세요"
           />
-          <ButtonStyle htmltype="submit" loading={addPostLoading}>
-            포스트 작성
-          </ButtonStyle>
+          <ButtonStyle htmltype="submit">포스트 작성</ButtonStyle>
         </Form.Item>
       </Form>
     </AppLayout>
