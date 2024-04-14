@@ -69,7 +69,18 @@ router.get("/", async (req, res, next) => {
   try {
     // 로그인 한 이후에만 req.user에 데이터가 있으므로
     if (req.user) {
-      const user = await User.findOne({ where: req.user.id });
+      const user = await User.findOne({
+        where: req.user.id,
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ["id"],
+          },
+        ],
+      });
       res.status(200).json(user);
     } else res.status(200).json(null);
   } catch (error) {
