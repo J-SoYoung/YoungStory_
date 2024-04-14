@@ -111,7 +111,6 @@ export const initialState = {
   loadMenuPostsLoading: false, // 메뉴별 게시글 로드 시도중
   loadMenuPostsDone: false,
   loadMenuPostsError: null,
-
 };
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
@@ -121,7 +120,6 @@ export const ADD_POST_FAILURE = "ADD_POST_FAILURE";
 export const LOAD_MENUPOSTS_REQUEST = "LOAD_MENUPOSTS_REQUEST";
 export const LOAD_MENUPOSTS_SUCCESS = "LOAD_MENUPOSTS_SUCCESS";
 export const LOAD_MENUPOSTS_FAILURE = "LOAD_MENUPOSTS_FAILURE";
-
 
 // reducer
 const reducer = (state = initialState, action) => {

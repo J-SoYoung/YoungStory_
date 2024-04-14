@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 import {
   all,
   call,
@@ -18,20 +18,18 @@ import {
 } from "../reducers/post";
 
 function addPostAPI(data) {
-  // return axios.post("/post", data);
+  return axios.post("/post", data);
 }
 function* addPost(action) {
-  console.log("사가", action);
   try {
-    console.log("사가성공", action);
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addPostAPI, action.data);
+    console.log("사가성공", result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: action.data,
     });
   } catch (error) {
-    console.error("사가실패", error);
+    console.error(error);
     yield put({
       type: ADD_POST_FAILURE,
       error: error.response.data,
@@ -68,13 +66,6 @@ function* watchLoadMenuPosts() {
   yield takeLatest(LOAD_MENUPOSTS_REQUEST, loadMenuPosts);
 }
 
-
 export default function* postSaga() {
-  yield all([
-    fork(watchAddPost),
-    fork(watchLoadMenuPosts),
-    // fork(watchLoadPortfolio),
-    // fork(watchLoadStudyNote),
-    // fork(watchLoadTIL),
-  ]);
+  yield all([fork(watchAddPost), fork(watchLoadMenuPosts)]);
 }
