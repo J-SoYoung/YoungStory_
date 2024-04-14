@@ -7,6 +7,7 @@ import AppLayout from "../components/AppLayout/AppLayout";
 import StudyNotePostView from "../components/HomePostView/StudyNotePostView";
 import PortFoiloPostView from "../components/HomePostView/PortFoiloPostView";
 import { LOAD_USER_INFO_REQUEST } from "../reducers/user";
+import { LOAD_HOME_POSTS_REQUEST } from "../reducers/post";
 
 const HomeContents = styled.div`
   width: 100%;
@@ -19,10 +20,14 @@ const HomeContents = styled.div`
 `;
 
 const Home = () => {
-  const { mainPosts } = useSelector((state) => state.post);
-  const { me } = useSelector((state) => state.user);
-  console.log(me);
   const dispatch = useDispatch();
+  const { studyNote, portfolio } = useSelector((state) => state.post);
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_HOME_POSTS_REQUEST,
+    });
+  }, []);
 
   useEffect(() => {
     dispatch({
@@ -30,17 +35,13 @@ const Home = () => {
     });
   }, []);
 
-  // main에는 최근게시물 5개 / 2개
-  const studyNotes = mainPosts.filter((m) => m.categories === "studyNote");
-  const potfolios = mainPosts.filter((m) => m.categories === "portfolio");
-
   return (
     <AppLayout>
       <HomeContents>
         <h1>Study Note</h1>
-        <StudyNotePostView data={studyNotes} />
+        <StudyNotePostView data={studyNote} />
         <h1>PortFoilo</h1>
-        <PortFoiloPostView data={potfolios} />
+        <PortFoiloPostView data={portfolio} />
       </HomeContents>
     </AppLayout>
   );
