@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Category.associate = (db) => {
-    db.Category.belongsTo(db.Post);
+    db.Category.hasMany(db.Post);
   };
   return Category;
 };
