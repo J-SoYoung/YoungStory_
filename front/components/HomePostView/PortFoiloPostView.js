@@ -2,16 +2,27 @@ import React from "react";
 import styled from "styled-components";
 
 const PortFoiloPostView = ({ data }) => {
-  const PostBox = styled.div`
+  const PorfolioContain = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+  `;
+  const PorfolioBox = styled.div`
+    background-color: #fff3bf;
+    padding: 16px 10px;
+    box-sizing: border-box;
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
   `;
   const ImageBox = styled.div`
-    background-color: #eee;
-    width: 150px;
-    height: 150px;
+    border: 1px solid teal;
+    width: 250px;
+    height: 250px;
     margin-right: 8pt;
   `;
   const TextBox = styled.div`
@@ -27,20 +38,22 @@ const PortFoiloPostView = ({ data }) => {
       font-weight: 600;
     }
   `;
+  if (!data[0]) return null;
   return (
-    <div>
-      {data.map((d) => (
-        <PostBox>
+    <PorfolioContain>
+      {data[0]?.map((d) => (
+        <PorfolioBox key={d.id}>
           <ImageBox>
-            <img src={d.img} alt={d.img} />
+            {/* 이미지 추가 */}
+            {/* <img src={d.img} alt={d.img} width={150} height={150} /> */}
           </ImageBox>
           <TextBox>
             <h4>{d.title}</h4>
             <div>{d.content}</div>
           </TextBox>
-        </PostBox>
+        </PorfolioBox>
       ))}
-    </div>
+    </PorfolioContain>
   );
 };
 

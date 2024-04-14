@@ -12,6 +12,9 @@ import {
   ADD_POST_REQUEST,
   ADD_POST_FAILURE,
   ADD_POST_SUCCESS,
+  LOAD_HOME_POSTS_REQUEST,
+  LOAD_HOME_POSTS_SUCCESS,
+  LOAD_HOME_POSTS_FAILURE,
   LOAD_MENUPOSTS_REQUEST,
   LOAD_MENUPOSTS_SUCCESS,
   LOAD_MENUPOSTS_FAILURE,
@@ -32,6 +35,26 @@ function* addPost(action) {
     console.error(error);
     yield put({
       type: ADD_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
+function loadHomePostsAPI() {
+  return axios.get("/post");
+}
+function* loadHomePosts() {
+  try {
+    const result = yield call(loadHomePostsAPI);
+    console.log("homepost", result);
+    yield put({
+      type: LOAD_HOME_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_HOME_POSTS_FAILURE,
       error: error.response.data,
     });
   }
@@ -62,10 +85,17 @@ function* loadMenuPosts(action) {
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
+function* watchLoadHomePosts() {
+  yield takeLatest(LOAD_HOME_POSTS_REQUEST, loadHomePosts);
+}
 function* watchLoadMenuPosts() {
   yield takeLatest(LOAD_MENUPOSTS_REQUEST, loadMenuPosts);
 }
 
 export default function* postSaga() {
-  yield all([fork(watchAddPost), fork(watchLoadMenuPosts)]);
+  yield all([
+    fork(watchAddPost),
+    fork(watchLoadHomePosts),
+    fork(watchLoadMenuPosts),
+  ]);
 }

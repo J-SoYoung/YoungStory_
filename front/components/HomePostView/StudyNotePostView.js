@@ -30,13 +30,14 @@ const StudyNotePostView = ({ data }) => {
     overflow: hidden;
   `;
 
+  if (!data[0]) return null;
   return (
     <div>
-      {data.map((d) => (
-        <PostBox>
+      {data[0]?.map((d) => (
+        <PostBox key={d.id}>
           <Title>
             <span className="title">{d.title}</span>
-            <span className="date">{new Date().toISOString().split("T")[0]}</span>
+            <span className="date">{d.createdAt.split("T")[0]}</span>
           </Title>
           <Content>{d.content}</Content>
         </PostBox>
