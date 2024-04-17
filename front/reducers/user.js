@@ -68,7 +68,6 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case "LOGIN_SUCCESS": {
-        console.log("로그인", action.data);
         draft.loginLoading = false;
         draft.loginDone = true;
         draft.me = action.data;
@@ -109,7 +108,6 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case "LOAD_USER_INFO_SUCCESS": {
-        console.log("유저정보", action.data);
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
         draft.me = action.data;

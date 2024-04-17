@@ -47,7 +47,6 @@ function loginAPI(data) {
 function* login(action) {
   try {
     const result = yield call(loginAPI, action.data);
-    console.log("사가 로그인", result);
     yield put({
       type: LOGIN_SUCCESS,
       data: result.data,
@@ -85,7 +84,6 @@ function loadUserInfoAPI() {
 function* loadUserInfo(action) {
   try {
     const result = yield call(loadUserInfoAPI, action.data);
-    console.log("사가 유저 데이터", result);
     // yield delay(1000);
     yield put({
       type: LOGIN_SUCCESS,

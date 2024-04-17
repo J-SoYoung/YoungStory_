@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const StudyNotePostView = ({ data }) => {
-console.log('스터디 포스트 컴포넌트',data)
 
   const PostBox = styled.div`
     width: 100%;

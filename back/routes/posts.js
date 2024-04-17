@@ -5,7 +5,6 @@ const router = express.Router();
 // HOME 포스트 로드
 router.get("/", async (req, res, next) => {
   try {
-    console.log("홈 포스트로드");
     // db에서 포스트 찾기
     const studyNote = await Post.findAll({
       where: { CategoryId: 4 },

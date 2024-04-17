@@ -38,7 +38,7 @@ const AppLayout = ({ children }) => {
       });
     }
   }, []);
-  
+
   return (
     <>
       <GlobalStyle />
@@ -52,7 +52,7 @@ const AppLayout = ({ children }) => {
           </div>
 
           <p>
-            {me ? (
+            { me && me.id? (
               <>
                 <button
                   style={{ margin: "4px" }}

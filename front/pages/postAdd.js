@@ -15,10 +15,9 @@ import { ADD_POST_REQUEST } from "../reducers/post";
 const PostAdd = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, addPostLoading, addPostDone, addPostError } = useSelector(
+  const { addPostLoading, addPostDone, addPostError } = useSelector(
     (state) => state.post
   );
-  // console.log(mainPosts, me);
 
   const [title, handleChangetitle] = useInput("");
   const [content, handleChangeContent] = useInput("");
@@ -51,8 +50,6 @@ const PostAdd = () => {
       alert("빈칸을 작성해주세요");
       return;
     }
-
-    console.log("포스트작성", title, category, content);
     dispatch({
       type: ADD_POST_REQUEST,
       data: { title, category, img: null, content: content },

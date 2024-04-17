@@ -53,8 +53,7 @@ const Signup = () => {
     }
     if (password !== passwordCheck) return setPasswordError(true);
     if (!term) return setTermError(true);
-
-    console.log("회원가입", email, nickname, password);
+    
     dispatch({
       type: SIGNUP_REQUEST,
       data: { email, nickname, password },

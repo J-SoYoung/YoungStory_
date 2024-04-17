@@ -6,7 +6,6 @@ const router = express.Router();
 
 // 포스트 작성
 router.post("/", async (req, res, next) => {
-  console.log("서버 포스트데이터-", req.body);
   try {
     const category = req.body.category;
     let categoryId;
