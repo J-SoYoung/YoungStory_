@@ -1,5 +1,9 @@
 import { produce } from "immer";
 
+const STUDYNOTE = "studyNote";
+const TIL = "til";
+const PORTFOLIO = "portfolio";
+
 export const initialState = {
   // mainPosts: [
   //   {
@@ -129,9 +133,9 @@ export const LOAD_HOME_POSTS_REQUEST = "LOAD_HOME_POSTS_REQUEST";
 export const LOAD_HOME_POSTS_SUCCESS = "LOAD_HOME_POSTS_SUCCESS";
 export const LOAD_HOME_POSTS_FAILURE = "LOAD_HOME_POSTS_FAILURE";
 
-export const LOAD_MENUPOSTS_REQUEST = "LOAD_MENUPOSTS_REQUEST";
-export const LOAD_MENUPOSTS_SUCCESS = "LOAD_MENUPOSTS_SUCCESS";
-export const LOAD_MENUPOSTS_FAILURE = "LOAD_MENUPOSTS_FAILURE";
+export const LOAD_MENU_POSTS_REQUEST = "LOAD_MENU_POSTS_REQUEST";
+export const LOAD_MENU_POSTS_SUCCESS = "LOAD_MENU_POSTS_SUCCESS";
+export const LOAD_MENU_POSTS_FAILURE = "LOAD_MENU_POSTS_FAILURE";
 
 // reducer
 const reducer = (state = initialState, action) => {
@@ -156,20 +160,25 @@ const reducer = (state = initialState, action) => {
         break;
       }
 
-      case "LOAD_MENUPOSTS_REQUEST": {
+      case "LOAD_MENU_POSTS_REQUEST": {
         draft.loadMenuPostsLoading = true;
         draft.loadMenuPostsDone = false;
         draft.loadMenuPostsError = null;
         break;
       }
-      case "LOAD_MENUPOSTS_SUCCESS": {
+      case "LOAD_MENU_POSTS_SUCCESS": {
         draft.loadMenuPostsLoading = false;
         draft.loadMenuPostsDone = true;
-        // draft.studyNote.unshift(action.data.studyNote);
-        // draft.portfolio.unshift(action.data.portfolio);
+        if (action.data.category === STUDYNOTE) {
+          draft.studyNote.unshift(action.data.post);
+        } else if (action.data.category === PORTFOLIO) {
+          draft.portfolio.unshift(action.data.post);
+        } else if (action.data.category === TIL) {
+          draft.til.unshift(action.data.post);
+        }
         break;
       }
-      case "LOAD_MENUPOSTS_FAILURE": {
+      case "LOAD_MENU_POSTS_FAILURE": {
         draft.loadMenuPostsLoading = false;
         draft.loadMenuPostsDone = false;
         draft.loadMenuPostsError = action.error;
@@ -185,8 +194,7 @@ const reducer = (state = initialState, action) => {
       case "LOAD_HOME_POSTS_SUCCESS": {
         draft.loadHomePostsLoading = false;
         draft.loadHomePostsDone = true;
-        draft.studyNote.unshift(action.data.studyNote);
-        draft.portfolio.unshift(action.data.portfolio);
+        draft.mainPosts.unshift(action.data);
         break;
       }
       case "LOAD_HOME_POSTS_FAILURE": {
