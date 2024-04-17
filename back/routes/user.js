@@ -24,7 +24,7 @@ router.post("/signup", async (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     res.status(201).send("signup OK");
   } catch (error) {
-    console.error("회원가입 서버에러", error);
+    console.error(error);
     next(error);
   }
 });
@@ -57,7 +57,6 @@ router.post("/login", (req, res, next) => {
           },
         ],
       });
-      console.log("서버 - 로그인성공", fullUserWithoutPassword);
       return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
@@ -73,7 +72,6 @@ router.post("/logout", (req, res, next) => {
 
 // GET /user 유저정보 가져오기
 router.get("/", async (req, res, next) => {
-  console.log("서버 req.user", req.user);
   try {
     // 로그인 한 이후에만 req.user에 데이터가 있으므로
     if (req.user) {

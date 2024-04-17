@@ -22,7 +22,6 @@ const Login = () => {
   }, [loginLoaing, me]);
 
   const onSubmit = () => {
-    console.log(email, password);
     dispatch({
       type: LOGIN_REQUEST,
       data: { email, password },

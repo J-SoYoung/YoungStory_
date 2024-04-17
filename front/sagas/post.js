@@ -26,7 +26,6 @@ function addPostAPI(data) {
 function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data);
-    console.log("사가성공", result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: action.data,
@@ -70,7 +69,7 @@ function* loadMenuPosts(action) {
       data: result.data,
     });
   } catch (error) {
-    console.error("사가실패", error);
+    console.error(error);
     yield put({
       type: LOAD_MENU_POSTS_FAILURE,
       error: error.response.data,

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const PortFoiloPostView = ({ data }) => {
-  console.log("포폴 포스트 컴포넌트", data);
 
   const PorfolioContain = styled.div`
     display: flex;
