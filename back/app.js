@@ -9,10 +9,11 @@ const passport = require("passport");
 const db = require("./models");
 const passportCofig = require("./passport");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 
 const app = express();
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 passportCofig();
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 // router
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 app.use("/user", userRouter);
 
 app.listen(3065, () => {

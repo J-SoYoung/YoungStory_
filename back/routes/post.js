@@ -33,23 +33,27 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// 포스트 로드
-router.get("/", async (req, res, next) => {
+// MENU 포스트 로드
+router.get("/menu", async (req, res, next) => {
+  const category = req.query.category;
   try {
-    // db에서 포스트 찾기
-    let studyNote = await Post.findAll({
-      where: { CategoryId: 4 },
-      order: [["createdAt", "DESC"]], // createdAt 열을 기준으로 내림차순 정렬
-      limit: 5, // 최대 5개 레코드 로드
+    // req.query에서 받아온 카테고리로 카테고리 테이블에서 category id를 찾는다
+    // 위에서 찾은 id로 Post에서 해당 post를 모두 찾는다
+    const categoryId = await Category.findOne({
+      where: { name: req.query.category },
     });
-    let portfolio = await Post.findAll({
-      where: { CategoryId: 5 },
+    const post = await Post.findAll({
+      where: { CategoryId: categoryId.id },
       order: [["createdAt", "DESC"]],
-      limit: 2,
+      limit: 10, // 최대 10개 레코드 로드
+      include: [
+        {
+          model: User, // 게시글 작성자
+          attributes: ["id", "nickname"],
+        },
+      ],
     });
-
-    const post = { studyNote, portfolio };
-    res.status(201).json(post);
+    res.status(201).json((result = { post, category }));
   } catch (error) {
     console.error(error);
     next(error);
