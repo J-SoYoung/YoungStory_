@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const StudyNotePostView = ({ data }) => {
+console.log('스터디 포스트 컴포넌트',data)
+
   const PostBox = styled.div`
     width: 100%;
     height: 140px;
@@ -30,10 +32,10 @@ const StudyNotePostView = ({ data }) => {
     overflow: hidden;
   `;
 
-  if (!data[0]) return null;
+  if (!data) return null;
   return (
     <div>
-      {data[0]?.map((d) => (
+      {data?.map((d) => (
         <PostBox key={d.id}>
           <Title>
             <span className="title">{d.title}</span>

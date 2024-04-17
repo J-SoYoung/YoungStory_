@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const PortFoiloPostView = ({ data }) => {
+  console.log("포폴 포스트 컴포넌트", data);
+
   const PorfolioContain = styled.div`
     display: flex;
     justify-content: space-between;
@@ -38,10 +40,11 @@ const PortFoiloPostView = ({ data }) => {
       font-weight: 600;
     }
   `;
-  if (!data[0]) return null;
+
+  if (!data) return null;
   return (
     <PorfolioContain>
-      {data[0]?.map((d) => (
+      {data?.map((d) => (
         <PorfolioBox key={d.id}>
           <ImageBox>
             {/* 이미지 추가 */}

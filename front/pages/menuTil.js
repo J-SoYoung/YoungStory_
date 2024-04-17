@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LOAD_MENUPOSTS_REQUEST } from "../reducers/post";
+import { LOAD_MENU_POSTS_REQUEST } from "../reducers/post";
 import styled from "styled-components";
 
 import AppLayout from "../components/AppLayout/AppLayout";
 
 const MenuTil = () => {
   const dispatch = useDispatch();
-  const { loadMenuPostsLoading, loadMenuPostsError, mainPosts } = useSelector(
+  const { loadMenuPostsLoading, loadMenuPostsError, til } = useSelector(
     (state) => state.post
   );
-  const post = mainPosts.filter((m) => m.categories === "til");
-  console.log(post);
 
   useEffect(() => {
     if (loadMenuPostsError) {
@@ -24,15 +22,17 @@ const MenuTil = () => {
 
   useEffect(() => {
     dispatch({
-      type: LOAD_MENUPOSTS_REQUEST,
-      categories: "til",
+      type: LOAD_MENU_POSTS_REQUEST,
+      category: "til",
     });
-  }, [mainPosts]);
+  }, []);
+
+  if (!til[0]) return <p>로딩중</p>;
 
   return (
     <AppLayout>
       <SubTitle>Today I Learn</SubTitle>
-      {post.map((p, i) => (
+      {til[0].map((p, i) => (
         <Post key={i}>
           <p className="title">{p.title}</p>
           <div className="content">{p.content}</div>

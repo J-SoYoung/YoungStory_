@@ -21,7 +21,7 @@ const HomeContents = styled.div`
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { studyNote, portfolio } = useSelector((state) => state.post);
+  const { mainPosts } = useSelector((state) => state.post);
 
   useEffect(() => {
     dispatch({
@@ -35,13 +35,15 @@ const Home = () => {
     });
   }, []);
 
+  if (!mainPosts[0]) return <p>로딩중.</p>;
+  
   return (
     <AppLayout>
       <HomeContents>
         <h1>Study Note</h1>
-        <StudyNotePostView data={studyNote} />
+        <StudyNotePostView data={mainPosts[0]?.studyNote} />
         <h1>PortFoilo</h1>
-        <PortFoiloPostView data={portfolio} />
+        <PortFoiloPostView data={mainPosts[0]?.portfolio} />
       </HomeContents>
     </AppLayout>
   );
