@@ -15,9 +15,9 @@ import {
   LOAD_HOME_POSTS_REQUEST,
   LOAD_HOME_POSTS_SUCCESS,
   LOAD_HOME_POSTS_FAILURE,
-  LOAD_MENUPOSTS_REQUEST,
-  LOAD_MENUPOSTS_SUCCESS,
-  LOAD_MENUPOSTS_FAILURE,
+  LOAD_MENU_POSTS_REQUEST,
+  LOAD_MENU_POSTS_SUCCESS,
+  LOAD_MENU_POSTS_FAILURE,
 } from "../reducers/post";
 
 function addPostAPI(data) {
@@ -41,12 +41,11 @@ function* addPost(action) {
 }
 
 function loadHomePostsAPI() {
-  return axios.get("/post");
+  return axios.get("/posts");
 }
 function* loadHomePosts() {
   try {
     const result = yield call(loadHomePostsAPI);
-    console.log("homepost", result);
     yield put({
       type: LOAD_HOME_POSTS_SUCCESS,
       data: result.data,
@@ -60,23 +59,20 @@ function* loadHomePosts() {
   }
 }
 
-function loadMenuPostsAPI(categories) {
-  // return axios.get(`/posts?categories=${categories}`, data);
+function loadMenuPostsAPI(category) {
+  return axios.get(`/post/menu?category=${category}`);
 }
 function* loadMenuPosts(action) {
-  console.log("사가", action);
   try {
-    console.log("사가성공", action);
-    // const result = yield call(loadMenuPostsAPI, action.categories);
-    yield delay(1000);
+    const result = yield call(loadMenuPostsAPI, action.category);
     yield put({
-      type: LOAD_MENUPOSTS_SUCCESS,
-      // data: action.data,
+      type: LOAD_MENU_POSTS_SUCCESS,
+      data: result.data,
     });
   } catch (error) {
     console.error("사가실패", error);
     yield put({
-      type: LOAD_MENUPOSTS_FAILURE,
+      type: LOAD_MENU_POSTS_FAILURE,
       error: error.response.data,
     });
   }
@@ -89,7 +85,7 @@ function* watchLoadHomePosts() {
   yield takeLatest(LOAD_HOME_POSTS_REQUEST, loadHomePosts);
 }
 function* watchLoadMenuPosts() {
-  yield takeLatest(LOAD_MENUPOSTS_REQUEST, loadMenuPosts);
+  yield takeLatest(LOAD_MENU_POSTS_REQUEST, loadMenuPosts);
 }
 
 export default function* postSaga() {

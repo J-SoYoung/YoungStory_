@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { LOAD_MENUPOSTS_REQUEST } from "../reducers/post";
+import { LOAD_MENU_POSTS_REQUEST } from "../reducers/post";
 
 import AppLayout from "../components/AppLayout/AppLayout";
 import StudyNotePostView from "../components/HomePostView/StudyNotePostView";
 
 const menuStudynote = () => {
   const dispatch = useDispatch();
-  const { loadMenuPostsLoading, loadMenuPostsError, mainPosts } = useSelector(
+  const { loadMenuPostsLoading, loadMenuPostsError, studyNote } = useSelector(
     (state) => state.post
   );
-  const post = mainPosts.filter((m) => m.categories === "studyNote");
-  console.log(post);
 
   useEffect(() => {
     if (loadMenuPostsError) {
@@ -25,10 +23,10 @@ const menuStudynote = () => {
 
   useEffect(() => {
     dispatch({
-      type: LOAD_MENUPOSTS_REQUEST,
-      categories: "studyNote",
+      type: LOAD_MENU_POSTS_REQUEST,
+      category: "studyNote",
     });
-  }, [mainPosts]);
+  }, []);
 
   return (
     <AppLayout>
@@ -41,7 +39,7 @@ const menuStudynote = () => {
         <span>Web</span>
         <span>CS</span>
       </HashtagsBox>
-      <StudyNotePostView data={post} />
+      <StudyNotePostView data={studyNote[0]} />
     </AppLayout>
   );
 };
@@ -57,7 +55,7 @@ const HashtagsBox = styled.div`
     cursor: pointer;
   }
   & > span:hover {
-    background-color: #FCBE24;
+    background-color: #fcbe24;
     color: white;
     font-weight: 600;
   }
