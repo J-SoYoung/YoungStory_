@@ -2,15 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 const StudyNotePostView = ({ data }) => {
-
   const PostBox = styled.div`
     width: 100%;
     height: 140px;
     margin: 10px 0;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    &:hover {
+      background-color: #eee;
+      border-radius: 8px;
+    }
   `;
   const Title = styled.div`
     font-size: 18px;
     font-weight: 600;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,7 +29,7 @@ const StudyNotePostView = ({ data }) => {
     width: 100%;
     height: 100px;
     color: #a6a6a6;
-    font-size: 16px;
+    font-size: 14px;
     word-break: break-all;
     white-space: normal;
     -webkit-line-clamp: 3;
