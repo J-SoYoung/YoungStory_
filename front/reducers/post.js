@@ -111,6 +111,7 @@ export const initialState = {
   studyNote: [],
   til: [],
   portfolio: [],
+  imagePath: [],
 
   addPostLoading: false, // 게시글 작성 시도중
   addPostDone: false,
@@ -123,6 +124,10 @@ export const initialState = {
   loadMenuPostsLoading: false, // 메뉴별 게시글 로드 시도중
   loadMenuPostsDone: false,
   loadMenuPostsError: null,
+
+  uploadImagesLoading: false, // 이미지 업로드 시도중
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
 
 export const ADD_POST_REQUEST = "ADD_POST_REQUEST";
@@ -136,6 +141,11 @@ export const LOAD_HOME_POSTS_FAILURE = "LOAD_HOME_POSTS_FAILURE";
 export const LOAD_MENU_POSTS_REQUEST = "LOAD_MENU_POSTS_REQUEST";
 export const LOAD_MENU_POSTS_SUCCESS = "LOAD_MENU_POSTS_SUCCESS";
 export const LOAD_MENU_POSTS_FAILURE = "LOAD_MENU_POSTS_FAILURE";
+
+export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
+export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
+export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
+export const REMOVE_IMAGE = "REMOVE_IMAGE";
 
 // reducer
 const reducer = (state = initialState, action) => {
@@ -201,6 +211,31 @@ const reducer = (state = initialState, action) => {
         draft.loadHomePostsLoading = false;
         draft.loadHomePostsDone = false;
         draft.loadHomePostsError = action.error;
+        break;
+      }
+
+      case "UPLOAD_IMAGES_REQUEST": {
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+      }
+      case "UPLOAD_IMAGES_SUCCESS": {
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        draft.imagePath.unshift(...action.data);
+        break;
+      }
+      case "UPLOAD_IMAGES_FAILURE": {
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = action.error;
+        break;
+      }
+      case "REMOVE_IMAGE": {
+        console.log("redux-remove image", action.data);
+        draft.imagePath = draft.imagePath.filter((v, i) => i !== action.data);
+        break;
         break;
       }
 
