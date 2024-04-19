@@ -1,10 +1,45 @@
 const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 const { Post, Comment, User, Category, Image } = require("../models");
 const hashtag = require("../models/hashtag");
 const category = require("../models/category");
+
 const router = express.Router();
 
-// 포스트 작성
+// fs로 폴더 생성/검색 하기
+try {
+  fs.accessSync("uploads");
+} catch {
+  console.log("uploads폴더가 없으므로 생성합니다");
+  fs.mkdirSync("uploads");
+}
+
+// multiFormData설정
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads");
+    },
+    filename(req, file, done) {
+      // thdud.png
+      const ext = path.extname(file.originalname); //확장자 추출 : .png
+      const basename = path.basename(file.originalname, ext); // filename : 소영
+      done(null, basename + "_" + new Date().getTime() + ext); // thdud124345123.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+// POST /images 이미지추가
+router.post("/images", upload.array("image"), (req, res, next) => {
+  console.log(req.files);
+  res.json(req.files.map((v) => v.filename));
+});
+
+// POST /post 포스트 작성
 router.post("/", async (req, res, next) => {
   try {
     const category = req.body.category;
@@ -19,7 +54,7 @@ router.post("/", async (req, res, next) => {
     const post = await Post.create({
       UserId: req.user.id,
       title: req.body.title,
-      // img: null,
+      // image: null,
       content: req.body.content,
       category: req.body.category,
       CategoryId: categoryId,

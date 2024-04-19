@@ -5,6 +5,7 @@ const session = require("express-session");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const passport = require("passport");
+const path = require("path");
 
 const db = require("./models");
 const passportCofig = require("./passport");
@@ -33,6 +34,12 @@ app.use(
   })
 );
 app.use(express.json());
+
+// front에서도 서버의 폴더 접근할 수 있도록 설정 ( image 미리보기 때문 )
+app.use("/", express.static(path.join(__dirname, "uploads")));
+
+// 프론트에서 받은 데이터를 req.body에 넣음, 일반 form데이터 받을 때
+app.use(express.urlencoded({ extended: true }));
 
 // session, cookie
 app.use(cookieParser(process.env.COOKIE_SECRET));
