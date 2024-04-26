@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
+      // CategoryId
+      // UserId
     },
     {
       charset: "utf8mb4",

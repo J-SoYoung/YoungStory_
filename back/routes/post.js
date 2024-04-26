@@ -40,27 +40,47 @@ router.post("/images", upload.array("image"), (req, res, next) => {
 });
 
 // POST /post 포스트 작성
-router.post("/", async (req, res, next) => {
+router.post("/",  upload.none(), async (req, res, next) => {
   try {
-    const category = req.body.category;
+
     let categoryId;
-    if (category) {
+    if (req.body.category) {
       const [savedCategory, created] = await Category.findOrCreate({
-        where: { name: category },
+        where: { name: req.body.category },
       });
       categoryId = savedCategory.id;
     }
-
     const post = await Post.create({
       UserId: req.user.id,
       title: req.body.title,
-      // image: null,
       content: req.body.content,
       category: req.body.category,
       CategoryId: categoryId,
     });
 
-    res.status(201).json(post);
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image }))
+        );
+        await post.addImages(images);
+      } else {
+        const images = await Image.create({ src: req.body.image });
+        await post.addImages(images);
+      }
+    }
+
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        { model: Image },
+        {
+          model: User, // 게시글 작성자
+          attributes: ["id", "nickname"],
+        },
+      ],
+    });
+    res.status(201).json(fullPost);
   } catch (error) {
     console.error(error);
     next(error);
