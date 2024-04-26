@@ -10,7 +10,11 @@ import {
 } from "../components/globalStyle/style";
 import { Button, Form } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_POST_REQUEST, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST } from "../reducers/post";
+import {
+  ADD_POST_REQUEST,
+  REMOVE_IMAGE,
+  UPLOAD_IMAGES_REQUEST,
+} from "../reducers/post";
 import image from "../../back/models/image";
 
 const PostAdd = () => {
@@ -30,7 +34,6 @@ const PostAdd = () => {
   const [title, handleChangetitle] = useInput("");
   const [content, handleChangeContent] = useInput("");
   const [category, setCategory] = useState("category");
-  const [imagePreview, setImagePreview] = useState("");
   const imageRef = useRef();
 
   const handleChangeCategory = useCallback((value) => {
@@ -67,13 +70,23 @@ const PostAdd = () => {
   });
 
   const onSubmitPost = useCallback(() => {
-    if (!title || !content || category === "category") {
+    if (!title || !content) {
       alert("빈칸을 작성해주세요");
       return;
     }
+    if (category === "category") {
+      alert("카테고리를 설정해주세요");
+    }
+
+    const formData = new FormData();
+    imagePath.forEach((p, i) => formData.append('image', p));
+    formData.append("content", content);
+    formData.append("title", title);
+    formData.append("category", category);
+
     dispatch({
       type: ADD_POST_REQUEST,
-      data: { title, category, image: null, content: content },
+      data: formData,
     });
 
     if (addPostDone) {
@@ -85,7 +98,7 @@ const PostAdd = () => {
       console.error(addPostError);
       return alert("포스트 작성 실패");
     }
-  }, [title, category, content]);
+  }, [title, category, content, imagePath]);
 
   if (addPostLoading) {
     <span>로딩중</span>;
