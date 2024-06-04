@@ -1,14 +1,14 @@
 import { produce } from "immer";
 
-const STUDYNOTE = "studyNote";
-const TIL = "til";
-const PORTFOLIO = "portfolio";
+const STUDYNOTE = "StudyNote";
+const TIL = "Til";
+const PORTFOLIO = "Portfolio";
 
 export const initialState = {
   mainPosts: [],
-  studyNote: [],
-  til: [],
-  portfolio: [],
+  StudyNote: [],
+  Til: [],
+  Portfolio: [],
   imagePath: [],
 
   addPostLoading: false, // 게시글 작성 시도중
@@ -78,11 +78,11 @@ const reducer = (state = initialState, action) => {
         draft.loadMenuPostsLoading = false;
         draft.loadMenuPostsDone = true;
         if (action.data.category === STUDYNOTE) {
-          draft.studyNote.unshift(action.data.post);
+          draft.StudyNote.unshift(action.data.post);
         } else if (action.data.category === PORTFOLIO) {
-          draft.portfolio.unshift(action.data.post);
+          draft.Portfolio.unshift(action.data.post);
         } else if (action.data.category === TIL) {
-          draft.til.unshift(action.data.post);
+          draft.Til.unshift(action.data.post);
         }
         break;
       }

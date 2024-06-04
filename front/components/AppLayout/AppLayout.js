@@ -76,13 +76,13 @@ const AppLayout = ({ children }) => {
         <TextContainer>
           <Sidebar>
             <Menu mode="vertical" style={{ width: 200 }}>
-              <Menu.Item key="til" icon={<SignatureOutlined />}>
+              <Menu.Item key="Til" icon={<SignatureOutlined />}>
                 <Link href="/menuTil">TIL</Link>
               </Menu.Item>
-              <Menu.Item key="studynote" icon={<BookOutlined />}>
+              <Menu.Item key="Studynote" icon={<BookOutlined />}>
                 <Link href="/menuStudynote">DEV STUDY-NOTE</Link>
               </Menu.Item>
-              <Menu.Item key="portfolio" icon={<LaptopOutlined />}>
+              <Menu.Item key="Portfolio" icon={<LaptopOutlined />}>
                 <Link href="/menuPortfolio">PORTFOLIO</Link>
               </Menu.Item>
               <Menu.Item key="contact" icon={<PhoneOutlined />}>

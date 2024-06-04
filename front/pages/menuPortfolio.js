@@ -6,7 +6,7 @@ import PortFoiloPostView from "../components/HomePostView/PortFoiloPostView";
 
 const MenuPortfolio = () => {
   const dispatch = useDispatch();
-  const { loadMenuPostsLoading, loadMenuPostsError, portfolio } = useSelector(
+  const { loadMenuPostsLoading, loadMenuPostsError, Portfolio } = useSelector(
     (state) => state.post
   );
 
@@ -22,14 +22,14 @@ const MenuPortfolio = () => {
   useEffect(() => {
     dispatch({
       type: LOAD_MENU_POSTS_REQUEST,
-      category: "portfolio",
+      category: "Portfolio",
     });
   }, []);
 
   return (
     <AppLayout>
       <h1>Portfolio</h1>
-      <PortFoiloPostView data={portfolio[0]} />
+      <PortFoiloPostView data={Portfolio[0]} />
       {/* {post.map((p) => (
         <div>
           <img />

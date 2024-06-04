@@ -7,7 +7,7 @@ import AppLayout from "../components/AppLayout/AppLayout";
 
 const MenuTil = () => {
   const dispatch = useDispatch();
-  const { loadMenuPostsLoading, loadMenuPostsError, til } = useSelector(
+  const { loadMenuPostsLoading, loadMenuPostsError, Til } = useSelector(
     (state) => state.post
   );
 
@@ -23,17 +23,18 @@ const MenuTil = () => {
   useEffect(() => {
     dispatch({
       type: LOAD_MENU_POSTS_REQUEST,
-      category: "til",
+      category: "Til",
     });
   }, []);
 
-  if (!til[0]) return <p>로딩중</p>;
+  if (!Til[0]) return <p>로딩중</p>;
 
   return (
     <AppLayout>
       <SubTitle>Today I Learn</SubTitle>
-      {til[0].map((p, i) => (
+      {Til[0].map((p, i) => (
         <Post key={i}>
+          <p>{p.createdAt.split('T')[0]}</p>
           <p className="title">{p.title}</p>
           <div className="content">{p.content}</div>
         </Post>

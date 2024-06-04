@@ -24,6 +24,12 @@ const PostAdd = () => {
   const { addPostLoading, addPostDone, addPostError } = useSelector(
     (state) => state.post
   );
+
+  const [title, handleChangetitle] = useInput("");
+  const [content, handleChangeContent] = useInput("");
+  const [category, setCategory] = useState("category");
+  const imageRef = useRef();
+
   useEffect(() => {
     if (!me.id) {
       alert("로그인이 필요한 서비스입니다");
@@ -31,10 +37,18 @@ const PostAdd = () => {
     }
   }, [me]);
 
-  const [title, handleChangetitle] = useInput("");
-  const [content, handleChangeContent] = useInput("");
-  const [category, setCategory] = useState("category");
-  const imageRef = useRef();
+  useEffect(() => {
+    if(addPostDone){
+      alert('포스트 작성 OK')
+      setTimeout(() => {
+        Router.push(`/menu${category}`);
+      }, 500);
+    }
+    if (addPostError) {
+      console.error(addPostError);
+      return alert("포스트 작성 실패");
+    }
+  }, [addPostDone]);
 
   const handleChangeCategory = useCallback((value) => {
     setCategory(value);
@@ -79,7 +93,7 @@ const PostAdd = () => {
     }
 
     const formData = new FormData();
-    imagePath.forEach((p, i) => formData.append('image', p));
+    imagePath.forEach((p, i) => formData.append("image", p));
     formData.append("content", content);
     formData.append("title", title);
     formData.append("category", category);
@@ -88,16 +102,6 @@ const PostAdd = () => {
       type: ADD_POST_REQUEST,
       data: formData,
     });
-
-    if (addPostDone) {
-      return setTimeout(() => {
-        Router.push("/");
-      }, 500);
-    }
-    if (addPostError) {
-      console.error(addPostError);
-      return alert("포스트 작성 실패");
-    }
   }, [title, category, content, imagePath]);
 
   if (addPostLoading) {
@@ -119,9 +123,9 @@ const PostAdd = () => {
             style={{ width: 120 }}
             onChange={handleChangeCategory}
             options={[
-              { value: "til", label: "Today I Learn" },
-              { value: "studyNote", label: "Study Note" },
-              { value: "portfolio", label: "Portfolio" },
+              { value: "Til", label: "Today I Learn" },
+              { value: "StudyNote", label: "Study Note" },
+              { value: "Portfolio", label: "Portfolio" },
             ]}
           />
           <br />

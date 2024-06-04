@@ -8,7 +8,7 @@ import StudyNotePostView from "../components/HomePostView/StudyNotePostView";
 
 const menuStudynote = () => {
   const dispatch = useDispatch();
-  const { loadMenuPostsLoading, loadMenuPostsError, studyNote } = useSelector(
+  const { loadMenuPostsLoading, loadMenuPostsError, StudyNote } = useSelector(
     (state) => state.post
   );
 
@@ -24,7 +24,7 @@ const menuStudynote = () => {
   useEffect(() => {
     dispatch({
       type: LOAD_MENU_POSTS_REQUEST,
-      category: "studyNote",
+      category: "StudyNote",
     });
   }, []);
 
@@ -39,7 +39,7 @@ const menuStudynote = () => {
         <span>Web</span>
         <span>CS</span>
       </HashtagsBox>
-      <StudyNotePostView data={studyNote[0]} />
+      <StudyNotePostView data={StudyNote[0]} />
     </AppLayout>
   );
 };

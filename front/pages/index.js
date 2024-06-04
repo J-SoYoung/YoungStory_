@@ -32,14 +32,14 @@ const Home = () => {
   }, []);
 
   if (!mainPosts[0]) return <p>로딩중.</p>;
-  
+
   return (
     <AppLayout>
       <HomeContents>
         <h1>Study Note</h1>
-        <StudyNotePostView data={mainPosts[0]?.studyNote} />
+        <StudyNotePostView data={mainPosts[0]?.StudyNote} />
         <h1>PortFoilo</h1>
-        <PortFoiloPostView data={mainPosts[0]?.portfolio} />
+        <PortFoiloPostView data={mainPosts[0]?.Portfolio} />
       </HomeContents>
     </AppLayout>
   );
