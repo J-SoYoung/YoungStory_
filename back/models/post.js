@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "Post",
     {
       title: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(255),
         allowNull: false,
       },
       content: {
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       category: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(25),
         allowNull: false,
       },
       // CategoryId

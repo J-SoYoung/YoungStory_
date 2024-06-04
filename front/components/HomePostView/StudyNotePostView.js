@@ -4,7 +4,6 @@ import styled from "styled-components";
 import exampleImage from "/assets/images/ex1.svg";
 
 const StudyNotePostView = ({ data }) => {
-  console.log(data);
   const PostBox = styled.div`
     width: 100%;
     height: 160px;
@@ -61,7 +60,6 @@ const StudyNotePostView = ({ data }) => {
   return (
     <div>
       {data?.map((d) => {
-        console.log(d);
         return (
           <PostBox key={d.id}>
             <ImageBox>
